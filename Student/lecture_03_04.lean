@@ -67,6 +67,8 @@ def is_even_len'' := is_even ∘ String.length
 def apply2' { α : Type } : (α → α) → (α → α) -- → (α → β) → (α → γ)
 | f => fun a => f (f a)
 
+#reduce (apply2' inc) 5
+
 /-!
 Beyond having different names, these
 functions vary only in the types of
