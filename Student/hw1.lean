@@ -33,3 +33,14 @@ def list_len {α : Type} : List α → Nat
 | (List.cons h t) => 1 + list_len t
 
 #eval list_len l2
+
+
+def compn'' {α : Type} : Nat → (α → α) → (α → α)
+| Nat.zero, f => λ a => a
+| (Nat.succ n'), f => f ∘ compn'' n' f
+
+#eval (compn'' 5 Nat.succ) 0
+#eval (compn'' 5 sq) 2
+
+-- def my_comp {α β γ: Type} : (β → γ) → (α → β) → (β → γ)
+-- | g, f => λ (a : a) => 0

@@ -7,8 +7,20 @@ Hint: do case analysis on the second argument (a Nat can be either Nat.zero or
 (Nat.succ n') and use the fact that n + (1 + m) = 1 + (n + m).
 -/
 
-def add (α : Nat) (β: Nat) : Nat := α + β
+-- n' + 1 is the same as Nat.succ n'
+
+def add: Nat → Nat → Nat
+| n, 0 => n
+| n, (m' + 1) => 1 + (add n m')
+
+#eval add 4 5
+-- := α + β
 #eval add 3 2
+
+#eval add 0 1
+
+def mul : Nat → Nat → Nat
+
 
 /-!
 Write a function called append, polymorphic in a type, T, that takes two lists
