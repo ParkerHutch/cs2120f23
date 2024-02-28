@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Group.Defs
 import Mathlib.GroupTheory.GroupAction.Defs
+import Mathlib.Algebra.AddTorsor
 /-!
 We now turn to formalization of mathematical structures
 using the rich collection of abstractions already defined
@@ -495,7 +496,7 @@ instance : SubNegMonoid Rotation := {
 -- | r0, r => -r
 -- | r, r0 => r
 -- | r120, r120 => r0
--- | r120, r240 => r0 -- must fix this
+-- | r120, r240 => r240
 -- | r240, r120 => r120
 -- | r240, r240 => r0
 
@@ -513,3 +514,28 @@ additive torsor over that (additive) group.
 -- torsor takes points but needs the subtraction operation to be defined for them
 -- takes a second type containing the type of transformations
 -- instantiate Torsor [state] [rotation]
+
+instance : SubNegMonoid Rotation := {}
+instance : AddGroup Rotation := { -- weird angled bracket here
+  by
+    intro a
+    show Add.add (-a) a = 0
+    simp [Neg.neg]
+    cases a
+    repeat {
+      simp [add_Rotation, neg_Rotation, add.Add]
+    }
+      -- other stuff
+}
+
+#check AddTorsor -- go to the definition to see what it requires
+/-
+Instantiate AddTorsor Rotation State (G = rotation, P = State)
+- we already made AddAction
+- VSub is a typeclass (encodes a function called sub for subtraction)
+  - Will be the SubState operator (Point → Point → Group)
+- for a Torsor we also need a proof that the set of points is nonempty
+  - to do this just typecheck that there is some value of that type
+  - 'just requires that you give A value of that type' so maybe I don't need to actually give this
+- we don't need to define proofs for the axioms, can use sorry
+-/
