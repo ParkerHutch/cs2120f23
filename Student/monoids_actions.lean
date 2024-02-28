@@ -394,7 +394,7 @@ instance : VAdd Rotation State := ⟨ add_rot_state ⟩
 
 #check AddAction
 
-instance : AddAction Rotation State := {zero_add := sorry, add_vadd := sorry}
+instance : AddAction Rotation State := {zero_vadd := sorry, add_vadd := sorry}
 
 -- #reduce r240 +subv r120 (not sure how to make the subv)
 /-!
