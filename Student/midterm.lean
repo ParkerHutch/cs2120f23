@@ -491,7 +491,7 @@ instance : SubNegMonoid Rotation := {
   sub_eq_add_neg := sorry
 }
 
--- I don't think this function is necessary
+-- -- I don't think this function is necessary
 -- def sub_Rotations : Rotation → Rotation → Rotation
 -- | r0, r => -r
 -- | r, r0 => r
@@ -505,6 +505,11 @@ instance : SubNegMonoid Rotation := {
 #reduce -r0
 #reduce -r240
 
+/- Now the negative addition should be supported -/
+
+
+
+
 /-!
 Homework #2: Endow State and Rotation with the additional structure of an
 additive torsor over that (additive) group.
@@ -514,19 +519,18 @@ additive torsor over that (additive) group.
 -- torsor takes points but needs the subtraction operation to be defined for them
 -- takes a second type containing the type of transformations
 -- instantiate Torsor [state] [rotation]
-
-instance : SubNegMonoid Rotation := {}
-instance : AddGroup Rotation := { -- weird angled bracket here
-  by
-    intro a
-    show Add.add (-a) a = 0
-    simp [Neg.neg]
-    cases a
-    repeat {
-      simp [add_Rotation, neg_Rotation, add.Add]
-    }
-      -- other stuff
-}
+-- instance : SubNegMonoid Rotation := {}
+-- instance : AddGroup Rotation := { -- weird angled bracket here
+--   by
+--     intro a
+--     show Add.add (-a) a = 0
+--     simp [Neg.neg]
+--     cases a
+--     repeat {
+--       simp [add_Rotation, neg_Rotation, add.Add]
+--     }
+--       -- other stuff
+-- }
 
 #check AddTorsor -- go to the definition to see what it requires
 /-
@@ -539,3 +543,28 @@ Instantiate AddTorsor Rotation State (G = rotation, P = State)
   - 'just requires that you give A value of that type' so maybe I don't need to actually give this
 - we don't need to define proofs for the axioms, can use sorry
 -/
+
+/-
+class AddTorsor (G : outParam (Type*)) (P : Type*) [outParam <| AddGroup G] extends AddAction G P,
+  VSub G P where
+  [nonempty : Nonempty P]
+  /-- Torsor subtraction and addition with the same element cancels out. -/
+  vsub_vadd' : ∀ p1 p2 : P, (p1 -ᵥ p2 : G) +ᵥ p2 = p1
+  /-- Torsor addition and subtraction with the same element cancels out. -/
+  vadd_vsub' : ∀ (g : G) (p : P), g +ᵥ p -ᵥ p = g
+-/
+
+
+instance : AddGroup Rotation := {
+  add_left_neg := sorry -- this is a proposition, prof said we can use sorry
+}
+
+-- this is to make AddTorsor happy with State being nonempty
+instance : Inhabited State where
+  default := s0
+
+instance : AddTorsor Rotation State := {
+  vsub_vadd' := sorry, -- prof said we can use sorry for the propositions
+  vadd_vsub' := sorry
+  vsub := sub_State
+}
