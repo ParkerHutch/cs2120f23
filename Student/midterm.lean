@@ -565,6 +565,6 @@ instance : Inhabited State where
 
 instance : AddTorsor Rotation State := {
   vsub_vadd' := sorry, -- prof said we can use sorry for the propositions
-  vadd_vsub' := sorry
+  vadd_vsub' := sorry,
   vsub := sub_State
 }
