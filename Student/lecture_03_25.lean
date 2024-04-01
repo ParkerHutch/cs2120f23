@@ -160,3 +160,11 @@ def foo : (∃ (n : Nat), isEven n) → True
 | ⟨ n', pf ⟩ => _
 
 example : ∃ (n : Nat), n ≠ 0 := ⟨ 5, _ ⟩
+
+inductive IsEven : Nat → Prop
+| zero_is_even : IsEven 0
+| even_plus_2_even : ∀ (n : Nat), IsEven n → IsEven (n + 2)
+
+open IsEven
+example : IsEven 0 := IsEven.zero_is_even
+example : IsEven 4 := even_plus_2_even 2 zero_is_even
